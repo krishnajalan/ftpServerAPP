@@ -55,6 +55,35 @@ class _FTPState extends State<FTP> {
     //load();
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[850],
+          title: Text('Error Occured', style: TextStyle(color: Colors.grey),),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Connection Error!', style: TextStyle(color: Colors.grey),),
+                Text('Check the Server Details.', style: TextStyle(color: Colors.grey),),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('ok', style: TextStyle(color: Colors.amber),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     data = ModalRoute.of(context).settings.arguments;
@@ -79,7 +108,12 @@ class _FTPState extends State<FTP> {
             print("connect command!");
             String connection = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FtpPage(server: server)));
+                MaterialPageRoute(builder: (context) => FtpPage(server: server))
+            );
+            if (connection == "error") {
+              print('error');
+              return _showMyDialog();
+            }
           }
         )).toList(),
       ),

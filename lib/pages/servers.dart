@@ -185,12 +185,15 @@ class ServerCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                    server.serverName,
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 24,
-                    )
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      server.serverName,
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 24,
+                      )
+                  ),
                 ),
                 Expanded(
                   child: Align(
@@ -205,63 +208,66 @@ class ServerCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 5),
-            Row(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "host: "+server.ip,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "host: "+server.ip,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                          ),
+
                         ),
 
-                      ),
+                        SizedBox(width: 10,),
 
-                      SizedBox(width: 10,),
-
-                      Text(
-                        "user: " + server.username,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+                        Text(
+                          "user: " + server.username,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 10,),
+                        SizedBox(width: 10,),
 
-                      Text(
-                        "port: ${server.port}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                        color: Colors.grey[850],
-                        onPressed: connect,
-                        child: Text(
-                            "Connect",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                            )
+                        Text(
+                          "port: ${server.port}",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                          ),
                         )
+                      ],
                     ),
                   ),
-                )
-              ],
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                          color: Colors.grey[850],
+                          onPressed: connect,
+                          child: Text(
+                              "Connect",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              )
+                          )
+                      ),
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         )
