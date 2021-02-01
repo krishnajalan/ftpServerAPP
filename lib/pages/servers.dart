@@ -3,6 +3,7 @@ import 'package:ftpserver/pages/Location.dart';
 import 'dart:convert';
 import 'package:mime/mime.dart';
 import 'package:ftpconnect/ftpconnect.dart';
+import 'package:ftpserver/pages/Loading.dart';
 
 class Server{
   String ip;
@@ -51,6 +52,7 @@ class _FtpPageState extends State<FtpPage> {
 
   FTPConnect ftp;
   List<Widget> folders = [];
+  bool loading = true;
 
   Widget defineItem(FTPEntry name){
 
@@ -102,8 +104,7 @@ class _FtpPageState extends State<FtpPage> {
 
   void makeConnection() async {
     try {
-      print('makeConnections!');
-      print(widget.server.username);
+
       ftp = FTPConnect(
           widget.server.ip,
           user: widget.server.username,
@@ -112,8 +113,8 @@ class _FtpPageState extends State<FtpPage> {
       );
       await ftp.connect();
       List data = await ftp.listDirectoryContent();
-      print(data);
-      for(int i=0; i<data.length; i++){
+      setState(() {loading=false;});
+      for(int i=2; i<data.length; i++){
         setState(() {
           folders.add(
             Align(
@@ -131,6 +132,7 @@ class _FtpPageState extends State<FtpPage> {
         });
       }
     } catch (ex){
+      print("exception: $ex");
       Navigator.pop(context, "error");
     }
   }
@@ -158,7 +160,7 @@ class _FtpPageState extends State<FtpPage> {
         title: Text(widget.server.serverName),
       ),
 
-      body: ListView.builder(
+      body: loading ? Loading():ListView.builder(
         itemCount: folders.length,
         itemBuilder: (BuildContext context, int itemIndex) => folders[itemIndex],
       )

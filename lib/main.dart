@@ -7,22 +7,36 @@ import 'package:ftpserver/pages/servers.dart';
 import 'package:ftpserver/pages/input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:permission_handler/permission_handler.dart';
 
 List<Server> servers = [];
 
 load() async {
   final pref = await SharedPreferences.getInstance();
   final String savedServer = pref.getString("servers");
-  final List<dynamic> serverDeserialize = await json.decode(savedServer);
-  servers = serverDeserialize.map((json) => Server.fromJson(json)).toList();
-  if (servers==null) servers = [];
-  for(int i=0;i<servers.length; i++){
-    servers[i].removeNull();
+  if (savedServer==null) {
+    servers = [];
+  }else{
+    final List<dynamic> serverDeserialize = await json.decode(savedServer);
+    servers = serverDeserialize.map((json) => Server.fromJson(json)).toList();
+    print('server: $servers');
+    if (servers == null) {
+      servers = [];
+    }
+    else {
+      for (int i = 0; i < servers.length; i++) {
+        servers[i].removeNull();
+      }
+    }
   }
 }
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    await Permission.storage.request();
+  }
   await load();
   runApp(MaterialApp(
     initialRoute: '/',

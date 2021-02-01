@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ftpconnect/ftpconnect.dart';
+import 'package:ftpserver/pages/Loading.dart';
 import 'package:mime/mime.dart';
+import 'package:ftpserver/pages/Loading.dart';
 
 class Location extends StatefulWidget {
 
@@ -15,7 +17,7 @@ class _LocationState extends State<Location> {
 
   List<Widget> folders = [];
   String dirName ="";
-
+  bool loading = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -28,10 +30,9 @@ class _LocationState extends State<Location> {
     print("current: "+await widget.ftp.currentDirectory());
     dirName = await widget.ftp.currentDirectory();
     print('_dir_: $dirName');
-
     List data = await widget.ftp.listDirectoryContent();
-    print(data);
-    for(int i=0; i<data.length; i++){
+    setState(() => loading=false);
+    for(int i=2; i<data.length; i++){
       setState(() {
         folders.add(
             Align(
@@ -114,8 +115,7 @@ class _LocationState extends State<Location> {
           backgroundColor: Colors.grey[850],
           title: Text(dirName),
         ),
-
-        body: ListView.builder(
+        body: loading ? Loading():ListView.builder(
           itemCount: folders.length,
           itemBuilder: (BuildContext context, int itemIndex) => folders[itemIndex],
         )
